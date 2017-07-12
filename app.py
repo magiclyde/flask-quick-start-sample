@@ -1,9 +1,11 @@
 #!/usr/bin/python
 #coding=utf-8
 
+__author__ = 'magiclyde'
+
 import os, random, string
 from flask import Flask, request, redirect, render_template, \
-url_for, json, make_response, abort, session
+url_for, make_response, abort, session
 from werkzeug import secure_filename
 
 app = Flask(__name__)
