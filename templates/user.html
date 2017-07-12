@@ -13,6 +13,10 @@
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename = 'css/style.css') }}">
 {% endblock %}
 
+{% block nav %}
+{% include 'nav.html' with context %}
+{% endblock %}
+
 {% block container %}
     <div class="container">
         <div class="row">
