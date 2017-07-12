@@ -6,7 +6,7 @@ __author__ = 'magiclyde'
 
 import os, random, string
 from flask import Flask, request, redirect, render_template, \
-url_for, make_response, abort, session
+url_for, make_response, abort, session, flash
 from werkzeug import secure_filename
 
 app = Flask(__name__)
@@ -54,6 +54,8 @@ def signin_form():
 
 @app.route('/signin', methods = ['POST'])
 def signin():
+	error = None
+
 	csrf_token = request.form['csrf_token']
 	if csrf_token != session.get('csrf_token'):
 		abort(401)
@@ -61,9 +63,11 @@ def signin():
 	username = request.form['username']
 	if username == 'magiclyde' and request.form['password'] == 'qazwsx':
 		session['username'] = request.form['username']
+		flash('You were successfully logged in')
 		return redirect(url_for('home'))
-
-	return '<h3>Bad username or password.</h3>'
+	else:
+		flash('Bad username or password.')
+		return redirect(url_for('signin_form'))
 
 
 @app.route('/logout', methods = ['POST'])
