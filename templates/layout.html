@@ -12,13 +12,16 @@
 </head>
 <body id="app-layout">
 
-	{% with messages = get_flashed_messages() %}
+	{% with messages = get_flashed_messages(with_categories=true) %}
 		{% if messages %}
-			<ul class='flashes list-group'>
-				{% for message in messages %}
-					<li class="list-group-item list-group-item-info">{{ message }}</li>
-				{% endfor %}
-			</ul>
+			<div class="alert  alert-dismissable">
+				<a href="#" class="close" data-dismiss="alert" aria-label="close"><font color="red"><strong>&times;</strong></font></a>
+				<ul class="list-group">
+					{% for category, message in messages %}
+						<li class="list-group-item list-group-item-{{ category }}">{{ message }}</li>
+					{% endfor %}
+				</ul>
+			</div>
 		{% endif %}
 	{% endwith %}
 

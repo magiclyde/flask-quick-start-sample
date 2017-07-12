@@ -4,7 +4,7 @@
 __author__ = 'magiclyde'
 
 
-import os, random, string
+import os, random, string, datetime
 from flask import Flask, request, redirect, render_template, \
 url_for, make_response, abort, session, flash
 from werkzeug import secure_filename
@@ -54,19 +54,21 @@ def signin_form():
 
 @app.route('/signin', methods = ['POST'])
 def signin():
-	error = None
 
 	csrf_token = request.form['csrf_token']
 	if csrf_token != session.get('csrf_token'):
-		abort(401)
+		now = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+		app.logger.debug("%s\t signin error occured, ip is %s" % (now, request.remote_addr))
+		flash(u'csrf token invalid, please refresh page', 'danger')
+		return redirect(url_for('signin_form'))
 
 	username = request.form['username']
 	if username == 'magiclyde' and request.form['password'] == 'qazwsx':
 		session['username'] = request.form['username']
-		flash('You were successfully logged in')
+		flash(u'You were successfully logged in.', 'success')
 		return redirect(url_for('home'))
 	else:
-		flash('Bad username or password.')
+		flash(u'Bad username or password.', 'warning')
 		return redirect(url_for('signin_form'))
 
 
